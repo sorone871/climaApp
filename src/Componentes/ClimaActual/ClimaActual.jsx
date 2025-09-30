@@ -1,15 +1,23 @@
 import CardPrincipal from "../Cards/CardPrincipal";
 const ClimaActual = ({weather, city}) =>{
 
-   if (!weather) {
+    const icon = weather?.weather?.[0]?.icon ?? "";
+    const description = weather?.weather?.[0]?.description ?? "";
+    const temp = weather?.main?.temp ?? "--";
+
+    const feels_like = weather?.main?.feels_like ?? "--";
+    const humidity = weather?.main?.humidity ?? "--";
+    const wind = weather?.wind?.speed ?? "--";
+   if (!weather?.main?.temp) {
     return (
         <section className="w-full h-full  md:col-span-2 md:row-span-2  rounded-md pb-[5rem] ">
+
         <div className="w-[100%] h-[80%] bg-[url(../public/images/bg-today-large.svg)] bg-cover bg-no-repeat bg-center mb-3
-            flex justify-center items-center gap-[70%] py-[2rem]            
+             items-center flex justify-between  py-[2rem] px-[4rem]            
             rounded-[23px]
              text-white">
                 <div className="flex flex-col">
-                    <h2>Ciudad</h2>
+                    
                     <p>Fecha</p>
                 </div>
                 <div>
@@ -34,10 +42,10 @@ const ClimaActual = ({weather, city}) =>{
     } // Evita error si aún no hay datos
 
     // Ejemplo para formatear la fecha
-    const date = new Date(weather.current.dt * 1000).toLocaleDateString("es-MX", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
+    const date = new Date(weather.dt * 1000).toLocaleDateString("es-MX", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
     });
     
 
@@ -48,18 +56,29 @@ const ClimaActual = ({weather, city}) =>{
             
              {/* Ciudad y fecha */}
             <div className="w-[100%] h-[80%] bg-[url(../public/images/bg-today-large.svg)] bg-cover bg-no-repeat bg-center mb-3
-            flex justify-center items-center gap-[70%] py-[2rem]            
+             items-center flex justify-between py-[2rem] px-[4rem]            
             rounded-[23px]
              text-white">
                 <div className="flex flex-col">
-                    <h2>{city}</h2>
+                    <h2>{city || "Ciudad"}</h2>
                     <p>{date}</p>
                 </div>
+
                 <div>
                     <div>
-                        <img src={`https://openweathermap.org/img/wn/${weather.current.weather[0].icon}@2x.png`} alt={weather.current.weather[0].description} />
+                        {icon ? (
+                        <img
+                        className="w-[80px] h-[80px]"
+                        src={`https://openweathermap.org/img/wn/${icon}@2x.png`}
+                        alt={description}
+                        />
+                    ) : (
+                        <div className="w-[80px] h-[80px] bg-gray-600 rounded-full" />
+                    )}
+
                     </div>
-                    <strong className="text-4xl">{Math.round(weather.current.temp)}°C</strong>
+                    <strong className="text-4xl">{Math.round(weather.main.temp)}°C</strong>
+
                    
                 </div>
             </div>

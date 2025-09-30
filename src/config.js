@@ -1,1 +1,1 @@
-const API_KEY = import.meta.env.VITE_OPENWEATHER_KEY;
+export const API_KEY = import.meta.env.VITE_OPENWEATHER_KEY;

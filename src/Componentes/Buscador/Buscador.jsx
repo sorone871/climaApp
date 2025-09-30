@@ -5,18 +5,18 @@ const Buscador = ({onSearch}) =>{
     const [city,setCity] = useState("");
     const buscar = () =>{
         if(!city) return;
-        onSearch(city);
+        onSearch(city); // Llama a la función onSearch pasada desde App
     };
 
 
 
     return(
-        <section className="flex flex-col gap-[2rem] text-white justify-center items-center">
+        <section className="flex flex-col gap-[rem] text-white justify-center items-center">
             <div>
                 <h1>How's the sky looking today?</h1>
             </div>
 
-            <div className="flex ">
+            <div className="flex gap-8">
                 <input 
                 type="text"
                 placeholder="Search for a city, e.g., New York"
@@ -25,7 +25,10 @@ const Buscador = ({onSearch}) =>{
                 onChange={(e) => setCity(e.target.value)}
                 />
 
-                <button>
+                <button 
+                className="cursor-pointer w-[10rem] bg-blue-500 rounded-[10px] text-white hover:bg-blue-700"
+                onClick={buscar}
+                >
                     <p>Search</p>
                 </button>
             </div>
