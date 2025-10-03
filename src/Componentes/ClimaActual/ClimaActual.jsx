@@ -1,98 +1,87 @@
 import CardPrincipal from "../Cards/CardPrincipal";
-const ClimaActual = ({weather, city}) =>{
+import ClimaIconos from "../ClimaIconos/ClimaIconos";
 
-    const icon = weather?.weather?.[0]?.icon ?? "";
-    const description = weather?.weather?.[0]?.description ?? "";
-    const temp = weather?.main?.temp ?? "--";
 
-    const feels_like = weather?.main?.feels_like ?? "--";
-    const humidity = weather?.main?.humidity ?? "--";
-    const wind = weather?.wind?.speed ?? "--";
-   if (!weather?.main?.temp) {
+   
+
+
+const ClimaActual = ({ weather, location }) => {
+    const { city, country } = location
+  if (!weather || !weather.current_weather) {
     return (
-        <section className="w-full h-full  md:col-span-2 md:row-span-2  rounded-md pb-[5rem] ">
-
-        <div className="w-[100%] h-[80%] bg-[url(../public/images/bg-today-large.svg)] bg-cover bg-no-repeat bg-center mb-3
-             items-center flex justify-between  py-[2rem] px-[4rem]            
-            rounded-[23px]
-             text-white">
-                <div className="flex flex-col">
-                    
-                    <p>Fecha</p>
-                </div>
-                <div>
-                    <div>
-                        <img src="" alt="Imagen" />
-                    </div>
-                    <strong >°C</strong>
-                   
-                </div>
-
+      <section className="w-full h-full md:col-span-2 md:row-span-2 rounded-md pb-[5rem]">
+        <div className="w-full h-[80%] bg-[url(../public/images/bg-today-large.svg)] bg-cover bg-no-repeat bg-center mb-3 items-center flex justify-between py-[2rem] px-[4rem] rounded-[23px] text-white">
+          <div className="flex flex-col">
+            <h2>{city || "Ingresa una ciudad"}</h2>
+            <p>{"Fecha no disponible"}</p>
+          </div>
+          <div className="flex">
+            <div className="w-[120px] h-[120px]">
+              <img src="./images/icon-sunny.webp" alt="Imagen" className="w-full h-full" />
             </div>
-                {/* CARDS */}
-                <div className="w-[100%] h-[20vh]  flex justify-between flex-1 text-white  rounded-[23px]">
-                    
-                    <CardPrincipal />
-                    <CardPrincipal />
-                    <CardPrincipal />
-                    <CardPrincipal />
-                </div>
-        </section>
-    );
-    } // Evita error si aún no hay datos
+            <div className="flex justify-center items-center">
+              <strong className="text-[4rem]">°C</strong>
+            </div>
+          </div>
+        </div>
 
-    // Ejemplo para formatear la fecha
-    const date = new Date(weather.dt * 1000).toLocaleDateString("es-MX", {
+        <div className="w-full h-[20vh] flex justify-between text-white rounded-[23px]">
+          <CardPrincipal title="Feels Like" value="--" unit="°" />
+          <CardPrincipal title="Humidity" value="--" unit="%" />
+          <CardPrincipal title="Wind" value="--" unit="km/h" />
+          <CardPrincipal title="Precipitation" value="--" unit="mm" />
+        </div>
+      </section>
+    );
+  }
+
+  const current = weather.current_weather;
+  const temp = Math.round(current.temperature);
+  const wind = Math.round(current.windspeed);
+  const date = new Date(current.time).toLocaleDateString("es-MX", {
     weekday: "long",
     day: "numeric",
     month: "long",
-    });
-    
+  });
 
+   const currentTime = weather.current_weather.time // ejemplo: "2025-10-02T14:00"
+    const index = weather.hourly.time.indexOf(currentTime) // buscamos índice de la hora actual
 
-    
-    return(
-        <section className="w-full h-full  md:col-span-2 md:row-span-2  rounded-md pb-[5rem] ">
+    const feelsLike = index !== -1 ? Math.round(weather.hourly.apparent_temperature[index]) : '--'
+    const humidity = index !== -1 ? Math.round(weather.hourly.relative_humidity_2m[index]) : '--'
+    const precipitation = index !== -1 ? weather.hourly.precipitation[index] : '--'
+  const iconPath  = ClimaIconos[current.weathercode]
+
+  return (
+    <section className="w-full h-full md:col-span-2 md:row-span-2 rounded-md pb-[5rem]">
+      {/* Ciudad y fecha */}
+      <div className="w-full h-[80%] bg-[url(../public/images/bg-today-large.svg)] bg-cover bg-no-repeat bg-center mb-3 items-center flex justify-between py-[2rem] px-[4rem] rounded-[23px] text-white">
+        <div className="flex flex-col">
+          <h2 className="text-[3rem]"><strong>{city}, {country}</strong></h2>
+          <p>{date}</p>
+        </div>
+
+        <div className="flex">
+          <div className="w-[128px] h-[128px]  flex items-center justify-center">
             
-             {/* Ciudad y fecha */}
-            <div className="w-[100%] h-[80%] bg-[url(../public/images/bg-today-large.svg)] bg-cover bg-no-repeat bg-center mb-3
-             items-center flex justify-between py-[2rem] px-[4rem]            
-            rounded-[23px]
-             text-white">
-                <div className="flex flex-col">
-                    <h2>{city || "Ciudad"}</h2>
-                    <p>{date}</p>
-                </div>
+                <img src={iconPath} alt="Clima" className="w-full h-full object-contain" />
+            {/* Aquí puedes mapear `weathercode` a íconos personalizados si quieres */}
+          </div>
+          <div className="flex justify-center items-center">
+            <strong className="text-[4rem]">{temp}°C</strong>
+          </div>
+        </div>
+      </div>
 
-                <div>
-                    <div>
-                        {icon ? (
-                        <img
-                        className="w-[80px] h-[80px]"
-                        src={`https://openweathermap.org/img/wn/${icon}@2x.png`}
-                        alt={description}
-                        />
-                    ) : (
-                        <div className="w-[80px] h-[80px] bg-gray-600 rounded-full" />
-                    )}
-
-                    </div>
-                    <strong className="text-4xl">{Math.round(weather.main.temp)}°C</strong>
-
-                   
-                </div>
-            </div>
-            {/* CARDS */}
-            <div className="w-[100%] h-[20vh]  flex justify-between flex-1 text-white  rounded-[23px]">
-                
-                <CardPrincipal />
-                <CardPrincipal />
-                <CardPrincipal />
-                <CardPrincipal />
-            </div>
-
-        </section>
-    )
-}
+      {/* CARDS */}
+      <div className="w-full h-[20vh] flex justify-between text-white rounded-[23px]">
+        <CardPrincipal title="Feels Like" value={feelsLike} unit="°" />
+        <CardPrincipal title="Humidity" value={humidity} unit="%" />
+        <CardPrincipal title="Wind" value={wind} unit="km/h" />
+        <CardPrincipal title="Precipitation" value={precipitation} unit="mm" />
+      </div>
+    </section>
+  );
+};
 
 export default ClimaActual;
