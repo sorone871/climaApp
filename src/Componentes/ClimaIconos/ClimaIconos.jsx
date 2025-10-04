@@ -14,6 +14,7 @@ const ClimaIconos = {
   71: "/images/icon-snow.webp", // Nieve ligera
   73: "/images/icon-snow.webp",
   75: "/images/icon-snow.webp",
+  80: "/images/icon-rain.webp",
   95: "/images/icon-storm.webp", // Tormenta
   96: "/images/icon-storm.webp",
   99: "/images/icon-storm.webp"

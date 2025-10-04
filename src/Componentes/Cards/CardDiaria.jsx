@@ -6,16 +6,14 @@ const CardDiaria = ({ day, icon, max, min }) =>{
             <h3>{day}</h3>
             </div>
             {/* Icono */}
-            <div>
-                <img
-                    src={`https://openweathermap.org/img/wn/${icon}@2x.png`}
-                    alt="Icono del clima"
-                    className="w-[50px] h-[50px] mb-2"
-                />
-            </div>
-            <div>
-                <p>temperatura maxima</p>
-                <p>temperatura minima</p>
+            <div className="w-[80px] h-[70px]  flex items-center justify-center">
+            
+                <img src={icon} alt="Clima" className="w-full h-full object-contain" />
+            {/* Aquí puedes mapear `weathercode` a íconos personalizados si quieres */}
+          </div>
+            <div className="flex justify-between gap-[2rem]">
+                <p>{max}°</p>
+                <p>{min}°</p>
             </div>
            
         </div>

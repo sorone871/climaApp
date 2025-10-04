@@ -3,6 +3,7 @@ import Header from './Componentes/Header/Header'
 import Buscador from './Componentes/Buscador/Buscador'
 import ClimaActual from './Componentes/ClimaActual/ClimaActual'
 import ClimaDiario from './Componentes/ClimaDiario/ClimaDiario'
+import ClimaHora from './Componentes/ClimaHora/ClimaHora'
 import './App.css'
 
 function App() {
@@ -41,6 +42,8 @@ function App() {
       )
       const data = await meteoRes.json()
 
+      console.log("Datos recibidos de Open-Meteo:", data)
+
       setWeather(data)
     } catch (err) {
       console.error('Error fetching weather:', err)
@@ -52,12 +55,10 @@ function App() {
       <Header />
       <Buscador onSearch={fetchWeather} />
 
-      <div className="grid grid-cols-3 md:grid-cols-3 grid-rows-3 md:grid-rows-3 gap-2 md:gap-4 m-4 h-[75%]">
+      <div className="grid grid-cols-3 md:grid-cols-3 grid-rows-3 md:grid-rows-3 gap-2 md:gap-4 m-4 h-[72%]">
         <ClimaActual weather={weather} location={location} />
-        <ClimaDiario weather={weather} />
-        <div className="hidden md:block md:col-start-3 md:row-start-1 md:col-span-1 md:row-span-3 bg-gray-300 rounded-md p-10">
-          2
-        </div>
+        <ClimaDiario daily={weather?.daily} />
+        <ClimaHora />
       </div>
     </main>
   )

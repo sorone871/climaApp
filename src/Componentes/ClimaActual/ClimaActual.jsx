@@ -1,11 +1,8 @@
 import CardPrincipal from "../Cards/CardPrincipal";
 import ClimaIconos from "../ClimaIconos/ClimaIconos";
 
-
-   
-
-
 const ClimaActual = ({ weather, location }) => {
+    
     const { city, country } = location
   if (!weather || !weather.current_weather) {
     return (
@@ -44,8 +41,8 @@ const ClimaActual = ({ weather, location }) => {
     month: "long",
   });
 
-   const currentTime = weather.current_weather.time // ejemplo: "2025-10-02T14:00"
-    const index = weather.hourly.time.indexOf(currentTime) // buscamos índice de la hora actual
+   const currentTime = weather.current_weather.time.slice(0, 13) + ":00"; // Trunca a la hora
+   const index = weather.hourly.time.indexOf(currentTime);
 
     const feelsLike = index !== -1 ? Math.round(weather.hourly.apparent_temperature[index]) : '--'
     const humidity = index !== -1 ? Math.round(weather.hourly.relative_humidity_2m[index]) : '--'
